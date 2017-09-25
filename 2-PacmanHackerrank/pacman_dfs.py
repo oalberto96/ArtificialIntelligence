@@ -1,5 +1,18 @@
 #!/usr/bin/python
-from collections import deque
+
+'''
+Sample input
+3 9
+5 1
+7 20
+%%%%%%%%%%%%%%%%%%%%
+%--------------%---%
+%-%%-%%-%%-%%-%%-%-%
+%--------P-------%-%
+%%%%%%%%%%%%%%%%%%-%
+%.-----------------%
+%%%%%%%%%%%%%%%%%%%%
+'''
 
 class Graph:
     def __init__(self):
@@ -19,7 +32,6 @@ class Graph:
                     self.add_edge((vertex,(r+1,c)))
                 if c<c_grid_size-1 and maze[r][c+1] != '%':
                     self.add_edge((vertex,(r,c+1)))
-
     def nodes_sort(self):
         pass
 
@@ -40,27 +52,48 @@ class Graph:
             edge.append(vertex1)
             self.nodes[vertex2] = edge
 
-    def BFSsearch(self, start):
-        frontier = deque([start])
-        explored = []
+    def DFSsearch(self, vertex,visited):
+        frontier = [self.start]
+        visited = []
         while frontier:
-            state = frontier.popleft()
-            explored.append(state)
+            state = frontier.pop()
+            visited.append(state)
             if state == self.goal:
-                print(len(explored))
-                for node in explored:
-                    x,y = node
+                print(len(visited))
+                for v in visited:
+                    x,y = v
+                    print(str(x) + " " + str(y))
+                print(len(visited)-1)
+                for v in visited:
+                    x,y = v
                     print(str(x) + " " + str(y))
                 return True
             for neighbor in self.nodes[state]:
-                if neighbor not in frontier and neighbor not in explored:
+                if neighbor not in frontier and neighbor not in visited:
                     frontier.append(neighbor)
 
-def nextMove( r, c, pacman_r, pacman_c, food_r, food_c, grid):
+        def BFSsearch(self, start, visited_nodes):
+            frontier = Queue.new
+            explored = new
+
+            while not frontier.isEmpty():
+                state = frontier.dequeue
+                explored.add(state)
+
+                if goalTeste(state):
+                    return Yes
+                for neighbor in state.neighbors():
+                    if neighbor not in frontier or explored:
+                        frontier.enqueue(state)
+
+
+def dfs( r, c, pacman_r, pacman_c, food_r, food_c, grid):
     graph = Graph()
     graph.maze_to_graph(r, c, pacman_r, pacman_c, food_r, food_c, grid)
+    visited_nodes = []
     start = (pacman_r,pacman_c)
-    graph.BFSsearch(start)
+    graph.DFSsearch(start,visited_nodes)
+    return
 
 readfile = True
 grid = []
@@ -78,4 +111,4 @@ else:
     for i in range(0, r):
         grid.append(input().strip())
 
-nextMove(r, c, pacman_r, pacman_c, food_r, food_c, grid)
+dfs(r, c, pacman_r, pacman_c, food_r, food_c, grid)
