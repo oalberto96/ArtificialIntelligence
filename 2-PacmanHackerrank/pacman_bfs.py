@@ -17,13 +17,12 @@ Sample input
 class Graph:
     def __init__(self):
         self.nodes = {}
-        self.pos = {}
 
     def maze_to_graph(self, r_grid_size, c_grid_size, pacman_r, pacman_c, food_r, food_c, maze):
         empty_spaces = []
         Edges = []
-        start = (pacman_r,pacman_c)
-        goal = (food_r,food_c)
+        self.start = (pacman_r,pacman_c)
+        self.goal = (food_r,food_c)
         for r,line in enumerate(maze):
             for c,char in enumerate(line):
                 vertex = (r,c)
@@ -33,9 +32,8 @@ class Graph:
                     self.add_edge((vertex,(r+1,c)))
                 if c<c_grid_size-1 and maze[r][c+1] != '%':
                     self.add_edge((vertex,(r,c+1)))
-        print(self.nodes)
-
-
+    def nodes_sort(self):
+        pass
 
     def add_edge(self, vertex):
         vertex1,vertex2 = vertex
@@ -54,10 +52,36 @@ class Graph:
             edge.append(vertex1)
             self.nodes[vertex2] = edge
 
+    def DFSsearch(self, vertex,visited):
+        frontier = [self.start]
+        visited = []
+        while frontier:
+            state = frontier.pop()
+            visited.append(state)
+            if state == self.goal:
+                print(len(visited))
+                for v in visited:
+                    x,y = v
+                    print(str(x) + " " + str(y))
+                print(len(visited)-1)
+                for v in visited:
+                    x,y = v
+                    print(str(x) + " " + str(y))
+                return True
+            for neighbor in self.nodes[state]:
+                if neighbor not in frontier and neighbor not in visited:
+                    frontier.append(neighbor)
+
+
 def dfs( r, c, pacman_r, pacman_c, food_r, food_c, grid):
     graph = Graph()
     graph.maze_to_graph(r, c, pacman_r, pacman_c, food_r, food_c, grid)
+    visited_nodes = []
+    start = (pacman_r,pacman_c)
+    graph.DFSsearch(start,visited_nodes)
     return
+
+
 
 readfile = True
 grid = []
