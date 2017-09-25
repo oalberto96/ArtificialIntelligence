@@ -20,9 +20,6 @@ class Graph:
                 if c<c_grid_size-1 and maze[r][c+1] != '%':
                     self.add_edge((vertex,(r,c+1)))
 
-    def nodes_sort(self):
-        pass
-
     def add_edge(self, vertex):
         vertex1,vertex2 = vertex
         edge = []
@@ -40,9 +37,17 @@ class Graph:
             edge.append(vertex1)
             self.nodes[vertex2] = edge
 
+    def get_path(self,parent, start, goal):
+        path = [goal]
+        while path[-1] != start:
+            path.append(parent[path[-1]])
+        path.reverse()
+        return path
+
     def BFSsearch(self, start):
         frontier = deque([start])
         explored = []
+        parent = {}
         while frontier:
             state = frontier.popleft()
             explored.append(state)
@@ -51,9 +56,15 @@ class Graph:
                 for node in explored:
                     x,y = node
                     print(str(x) + " " + str(y))
+                path = self.get_path(parent, self.start, self.goal)
+                print(len(path)-1)
+                for node in path:
+                    x,y = node
+                    print(str(x) + " " + str(y))
                 return True
             for neighbor in self.nodes[state]:
                 if neighbor not in frontier and neighbor not in explored:
+                    parent[neighbor] = state
                     frontier.append(neighbor)
 
 def nextMove( r, c, pacman_r, pacman_c, food_r, food_c, grid):
@@ -79,3 +90,8 @@ else:
         grid.append(input().strip())
 
 nextMove(r, c, pacman_r, pacman_c, food_r, food_c, grid)
+
+'''
+Used for path finding:
+https://stackoverflow.com/questions/8922060/how-to-trace-the-path-in-a-breadth-first-search
+'''

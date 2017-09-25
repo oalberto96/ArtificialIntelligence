@@ -1,19 +1,5 @@
 #!/usr/bin/python
 
-'''
-Sample input
-3 9
-5 1
-7 20
-%%%%%%%%%%%%%%%%%%%%
-%--------------%---%
-%-%%-%%-%%-%%-%%-%-%
-%--------P-------%-%
-%%%%%%%%%%%%%%%%%%-%
-%.-----------------%
-%%%%%%%%%%%%%%%%%%%%
-'''
-
 class Graph:
     def __init__(self):
         self.nodes = {}
@@ -32,8 +18,6 @@ class Graph:
                     self.add_edge((vertex,(r+1,c)))
                 if c<c_grid_size-1 and maze[r][c+1] != '%':
                     self.add_edge((vertex,(r,c+1)))
-    def nodes_sort(self):
-        pass
 
     def add_edge(self, vertex):
         vertex1,vertex2 = vertex
@@ -52,9 +36,39 @@ class Graph:
             edge.append(vertex1)
             self.nodes[vertex2] = edge
 
+    def get_path(self,parent, start, goal):
+        path = [goal]
+        while path[-1] != start:
+            path.append(parent[path[-1]])
+        path.reverse()
+        return path
+
+    def nodes_sort(self):
+        for node in self.nodes:
+            list = self.nodes[node]
+            self.sort(list)
+
+    def sort(self, list):
+        for i in range(0,len(list)):
+            for j in range(i+1,len(list)):
+                if list[i][0] < list[j][0]:
+                    continue
+                elif list[i][0] == list[j][0]:
+                    if list[i][1] < list[j][1]:
+                        continue
+                    else:
+                        buble = list[i]
+                        list[i] = list[j]
+                        list[j] = buble
+                else:
+                    buble = list[i]
+                    list[i] = list[j]
+                    list[j] = buble
+
     def DFSsearch(self, vertex,visited):
         frontier = [self.start]
         visited = []
+        parent = {}
         while frontier:
             state = frontier.pop()
             visited.append(state)
@@ -63,42 +77,30 @@ class Graph:
                 for v in visited:
                     x,y = v
                     print(str(x) + " " + str(y))
-                print(len(visited)-1)
-                for v in visited:
+                path = self.get_path(parent,self.start,self.goal)
+                print(len(path)-1)
+                for v in path:
                     x,y = v
                     print(str(x) + " " + str(y))
                 return True
             for neighbor in self.nodes[state]:
                 if neighbor not in frontier and neighbor not in visited:
+                    parent[neighbor] = state
                     frontier.append(neighbor)
-
-        def BFSsearch(self, start, visited_nodes):
-            frontier = Queue.new
-            explored = new
-
-            while not frontier.isEmpty():
-                state = frontier.dequeue
-                explored.add(state)
-
-                if goalTeste(state):
-                    return Yes
-                for neighbor in state.neighbors():
-                    if neighbor not in frontier or explored:
-                        frontier.enqueue(state)
-
 
 def dfs( r, c, pacman_r, pacman_c, food_r, food_c, grid):
     graph = Graph()
     graph.maze_to_graph(r, c, pacman_r, pacman_c, food_r, food_c, grid)
     visited_nodes = []
     start = (pacman_r,pacman_c)
+    graph.nodes_sort()
     graph.DFSsearch(start,visited_nodes)
     return
 
 readfile = True
 grid = []
 if readfile:
-    text = open("maze.txt","r")
+    text = open("maze2.txt","r")
     pacman_r, pacman_c = [ int(i) for i in text.readline().strip().split() ]
     food_r, food_c = [ int(i) for i in text.readline().strip().split() ]
     r,c = [ int(i) for i in text.readline().strip().split() ]
