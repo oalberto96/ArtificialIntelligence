@@ -5,8 +5,6 @@ class Graph:
         self.nodes = {}
 
     def maze_to_graph(self, r_grid_size, c_grid_size, pacman_r, pacman_c, food_r, food_c, maze):
-        empty_spaces = []
-        Edges = []
         self.start = (pacman_r,pacman_c)
         self.goal = (food_r,food_c)
         for r,line in enumerate(maze):

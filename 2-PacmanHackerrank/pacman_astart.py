@@ -42,39 +42,55 @@ class Graph:
         path.reverse()
         return path
 
-    def BFSsearch(self, start):
-        frontier = deque([start])
+    def deleteMin(self, list, dest_node):
+        '''
+        Funcion que regresa el nodo con menor coste segun la
+        siguiente formula:
+            Cost = d(s,c) + h(c)
+        '''
+        min_cost = self.manhattan_distance(list[0], dest_node)
+        min_item = list[0]
+        for item in list:
+            cost = self.manhattan_distance(item,dest_node)
+            if cost < min_cost:
+                min_cost = cost
+                min_item = item
+        return list.pop(list.index(min_item))
+
+    def manhattan_distance(self,source,dest_node):
+        return abs(source[0] - dest_node[0]) + abs(source[1] - dest_node[1])
+
+    def ASTARsearch(self, start):
+        frontier = [start]
         explored = []
         parent = {}
         while frontier:
-            state = frontier.popleft()
+            state = self.deleteMin(frontier, self.goal)
             explored.append(state)
             if state == self.goal:
-                print(len(explored))
-                for node in explored:
-                    x,y = node
-                    print(str(x) + " " + str(y))
-                path = self.get_path(parent, self.start, self.goal)
+                path = self.get_path(parent,self.start,self.goal)
                 print(len(path)-1)
-                for node in path:
-                    x,y = node
+                for v in path:
+                    x,y = v
                     print(str(x) + " " + str(y))
                 return True
             for neighbor in self.nodes[state]:
                 if neighbor not in frontier and neighbor not in explored:
                     parent[neighbor] = state
                     frontier.append(neighbor)
+                #elif neighbor in frontier:
+                    #frontier.decreaseKey(neighbor)
 
-def nextMove( r, c, pacman_r, pacman_c, food_r, food_c, grid):
+def a_star( r, c, pacman_r, pacman_c, food_r, food_c, grid):
     graph = Graph()
     graph.maze_to_graph(r, c, pacman_r, pacman_c, food_r, food_c, grid)
     start = (pacman_r,pacman_c)
-    graph.BFSsearch(start)
+    graph.ASTARsearch(start)
 
 readfile = True
 grid = []
 if readfile:
-    text = open("maze.txt","r")
+    text = open("maze3.txt","r")
     pacman_r, pacman_c = [ int(i) for i in text.readline().strip().split() ]
     food_r, food_c = [ int(i) for i in text.readline().strip().split() ]
     r,c = [ int(i) for i in text.readline().strip().split() ]
@@ -87,9 +103,4 @@ else:
     for i in range(0, r):
         grid.append(input().strip())
 
-nextMove(r, c, pacman_r, pacman_c, food_r, food_c, grid)
-
-'''
-Used for path finding:
-https://stackoverflow.com/questions/8922060/how-to-trace-the-path-in-a-breadth-first-search
-'''
+a_star(r, c, pacman_r, pacman_c, food_r, food_c, grid)
