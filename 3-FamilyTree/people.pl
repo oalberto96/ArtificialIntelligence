@@ -1,0 +1,13 @@
+male(abraham).
+male(clancy).
+male(herb).
+male(homero).
+male(bart).
+female(mona).
+female(jackie).
+female(marge).
+female(patty).
+female(selma).
+female(lisa).
+female(maggie).
+female(ling).
