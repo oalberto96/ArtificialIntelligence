@@ -18,3 +18,4 @@ parent(marge, bart).
 parent(marge, lisa).
 parent(marge, maggie).
 parent(selma, ling).
+parent(pedrito,abraham).

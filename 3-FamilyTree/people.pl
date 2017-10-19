@@ -11,3 +11,5 @@ female(selma).
 female(lisa).
 female(maggie).
 female(ling).
+male(pedrito).
+male(pedrito).
