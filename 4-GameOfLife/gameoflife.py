@@ -1,17 +1,25 @@
-from tkinter import *
+import sys, pygame
+pygame.init()
 
-root = Tk()
+size = width, height = 1000, 1000
+speed = [2, 2]
+black = 0, 0, 0
 
-def key(event):
-    print("pressed" + repr(event.char))
+screen = pygame.display.set_mode(size)
 
-def callback(event):
-    print("clicked at" + str(event.x)+ " " + str(event.y))
+ball = pygame.image.load("ball.bmp")
+ballrect = ball.get_rect()
 
-canvas= Canvas(root, width=100, height=100)
+while 1:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT: sys.exit()
 
-x = canvas.create_rectangle(50, 25, 150, 75, fill="blue")
+    ballrect = ballrect.move(speed)
+    if ballrect.left < 0 or ballrect.right > width:
+        speed[0] = -speed[0]
+    if ballrect.top < 0 or ballrect.bottom > height:
+        speed[1] = -speed[1]
 
-canvas.tag_bind(x,"<ButtonPress-1>", callback)
-canvas.pack()
-root.mainloop()
+    screen.fill(black)
+    screen.blit(ball, ballrect)
+    pygame.display.flip()
