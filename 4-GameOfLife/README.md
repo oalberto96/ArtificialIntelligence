@@ -1,3 +1,5 @@
+# Conway's Game of life
+
 ## Instalacion
 
 ### Pygame
@@ -22,7 +24,15 @@ Compilar e instalar pygame
 python3 setup.py build
 sudo python3 setup.py install
 ```
+## Reglas
+
+1. Cualquier celula viva con menos de 2 vecinos muere por baja poblacion
+1. Cualquier celula con mas de 3 vecinos vivos muere como causa de sobrepoblacion
+1. Cualquier celula con 2 o 3 vecinos vive hasta la siguiente generacion
+1. Cualquier celula muerta con exactamente 3 vecinos vivos, revive
+
+
 
 #### Referencias
 https://askubuntu.com/questions/401342/how-to-download-pygame-in-python3-3
-
+http://web.stanford.edu/~cdebs/GameOfLife/
