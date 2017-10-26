@@ -35,9 +35,8 @@ def generate_grid(display,x_size, y_size):
     return grid
 
 def update_cell(grid, display, x, y):
-    grid.append(pygame.draw.rect(display, (0, 0, 0), (x, y, 50, 50), 0))
-    grid.append(pygame.draw.rect(display, (255, 255, 255), (x, y, 50, 50), 1))
-
+    pygame.draw.rect(display, (0, 0, 0), (x, y, 50, 50), 0)
+    pygame.draw.rect(display, (255, 255, 255), (x, y, 50, 50), 1)
 
 def main():
     x_screen = 500
