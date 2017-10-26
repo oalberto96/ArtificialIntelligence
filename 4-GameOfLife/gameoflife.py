@@ -8,18 +8,28 @@ class Cell():
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.alive = True
+        self.alive = False
+        self.rect = None
+
+    def get_rect(self):
+        return self.rect
 
     def draw(self, display):
         if self.alive:
             alive = 0
         else:
             alive = 1
-
         print(alive)
-        return pygame.draw.rect(display, (255, 255, 255), (self.x, self.y, 50, 50), alive)
+        self.rect = pygame.draw.rect(display, (255, 255, 255), (self.x, self.y, 50, 50), alive)
+        return self.rect
 
-    def kill(self):
+    def is_alive(self):
+        return self.alive
+
+    def live(self):
+        self.alive = True
+
+    def die(self):
         self.alive = False
 
 def generate_grid(display,x_size, y_size):
@@ -28,7 +38,9 @@ def generate_grid(display,x_size, y_size):
     grid = []
     while x < x_size:
         while y < y_size:
-            grid.append(pygame.draw.rect(display, (255, 255, 255), (x, y, 50, 50), 1))
+            cell = Cell(x, y)
+            cell.draw(display)
+            grid.append(cell)
             y += 50
         x += 50
         y = 0
@@ -59,11 +71,16 @@ def main():
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 x, y = event.pos
-                sprites_clicked = [sprite for sprite in grid if sprite.collidepoint(x, y)]
+                sprites_clicked = [sprite for sprite in grid if sprite.get_rect().collidepoint(x, y)]
                 print(sprites_clicked)
                 for sprite in sprites_clicked:
+                    if sprite.is_alive():
+                        sprite.die()
+                    else:
+                        sprite.live()
                     update_cell(grid, DISPLAY, sprite.x, sprite.y)
-                    grid.remove(sprite)
+                    sprite.draw(DISPLAY)
+
 
         pygame.display.update()
 
