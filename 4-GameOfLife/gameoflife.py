@@ -15,8 +15,8 @@ def generate_grid(display,x_size, y_size):
 
 
 def main():
-    x_screen = 1000
-    y_screen = 1000
+    x_screen = 500
+    y_screen = 500
     pygame.init()
     DISPLAY = pygame.display.set_mode((x_screen,y_screen),0,32)
     BLACK=(0,0,0)
@@ -34,6 +34,8 @@ def main():
                 x, y = event.pos
                 sprites_clicked = [sprite for sprite in grid if sprite.collidepoint(x, y)]
                 print(sprites_clicked)
+                for sprite in sprites_clicked:
+                    pygame.draw.rect(DISPLAY, (255, 255, 255), (sprite.x, sprite.y, 50, 50), 0)
         pygame.display.update()
 
 main()
