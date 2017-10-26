@@ -1,25 +1,39 @@
-import sys, pygame
-pygame.init()
+import pygame, sys
+from pygame.locals import *
 
-size = width, height = 1000, 1000
-speed = [2, 2]
-black = 0, 0, 0
+def generate_grid(display,x_size, y_size):
+    x = 0
+    y = 0
+    grid = []
+    while x < x_size:
+        while y < y_size:
+            grid.append(pygame.draw.rect(display, (255, 255, 255), (x, y, 50, 50), 1))
+            y += 50
+        x += 50
+        y = 0
+    return grid
 
-screen = pygame.display.set_mode(size)
 
-ball = pygame.image.load("ball.bmp")
-ballrect = ball.get_rect()
+def main():
+    x_screen = 1000
+    y_screen = 1000
+    pygame.init()
+    DISPLAY = pygame.display.set_mode((x_screen,y_screen),0,32)
+    BLACK=(0,0,0)
 
-while 1:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT: sys.exit()
+    DISPLAY.fill(BLACK)
+    grid = generate_grid(DISPLAY, x_screen, y_screen)
 
-    ballrect = ballrect.move(speed)
-    if ballrect.left < 0 or ballrect.right > width:
-        speed[0] = -speed[0]
-    if ballrect.top < 0 or ballrect.bottom > height:
-        speed[1] = -speed[1]
 
-    screen.fill(black)
-    screen.blit(ball, ballrect)
-    pygame.display.flip()
+    while True:
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                x, y = event.pos
+                sprites_clicked = [sprite for sprite in grid if sprite.collidepoint(x, y)]
+                print(sprites_clicked)
+        pygame.display.update()
+
+main()
