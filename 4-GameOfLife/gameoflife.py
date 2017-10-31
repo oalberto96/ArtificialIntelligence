@@ -96,6 +96,7 @@ def main():
     grid = generate_grid(DISPLAY, x_screen, y_screen)
 
     time = 0
+    clock = pygame.time.Clock()
     pygame.time.set_timer(USEREVENT+1, 1000)
     while True:
         if time < 1:
@@ -103,7 +104,6 @@ def main():
                 cell.miracle_of_life(grid)
                 update_cell(grid, DISPLAY, cell.x, cell.y)
                 cell.draw(DISPLAY)
-
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
@@ -126,7 +126,8 @@ def main():
                     update_cell(grid, DISPLAY, sprite.x, sprite.y)
                     sprite.draw(DISPLAY)
                     print(sprite)
-                    sprite.miracle_of_life(grid)
+        pygame.time.delay(200)
+
         pygame.display.update()
 
 main()

@@ -4,6 +4,10 @@
 
 ### Pygame
 
+```bash
+sudo apt-get install python-pygame
+```
+
 Descargar el codigo fuente
 
 ```bash
