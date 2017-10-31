@@ -24,7 +24,7 @@ class Cell():
         else:
             alive = 1
         print(alive)
-        self.rect = pygame.draw.rect(display, (255, 255, 255), (self.x, self.y, 50, 50), alive)
+        self.rect = pygame.draw.rect(display, (255, 255, 255), (self.x, self.y, CELL_SIZE, CELL_SIZE), alive)
         return self.rect
 
     def get_neighbors(self,grid):
@@ -76,14 +76,14 @@ def generate_grid(display,x_size, y_size):
             cell = Cell(x, y)
             cell.draw(display)
             grid.append(cell)
-            y += 50
-        x += 50
+            y += CELL_SIZE
+        x += CELL_SIZE
         y = 0
     return grid
 
 def update_cell(grid, display, x, y):
-    pygame.draw.rect(display, (0, 0, 0), (x, y, 50, 50), 0)
-    pygame.draw.rect(display, (255, 255, 255), (x, y, 50, 50), 1)
+    pygame.draw.rect(display, (0, 0, 0), (x, y, CELL_SIZE, CELL_SIZE), 0)
+    pygame.draw.rect(display, (255, 255, 255), (x, y, CELL_SIZE, CELL_SIZE), 1)
 
 def main():
     x_screen = 500
