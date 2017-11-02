@@ -1,4 +1,5 @@
 import pygame, sys
+import copy
 from pygame.locals import *
 from pygame.rect import Rect
 
@@ -23,7 +24,6 @@ class Cell():
             alive = 0
         else:
             alive = 1
-        print(alive)
         self.rect = pygame.draw.rect(display, (255, 255, 255), (self.x, self.y, CELL_SIZE, CELL_SIZE), alive)
         return self.rect
 
@@ -46,15 +46,16 @@ class Cell():
 
     def miracle_of_life(self, grid):
         neighbors = self.get_neighbors(grid)
-        print(neighbors)
-        if self.is_alive() != True:
-            if neighbors == 3:
+        if self.is_alive():
+            if neighbors > 3:
+                self.die()
+            elif neighbors < 2:
+                self.die()
+            elif neighbors == 3 or neighbors == 2:
                 self.live()
         else:
-            if neighbors > 3 or neighbors < 2:
-                self.die()
-            elif neighbors == 2 or neighbors ==3:
-                pass
+            if neighbors == 3:
+                self.live()
         self.get_neighbors(grid)
 
     def is_alive(self):
@@ -67,7 +68,7 @@ class Cell():
         self.alive = False
 
 
-def generate_grid(display,x_size, y_size):
+def generate_grid(display, x_size, y_size):
     x = 0
     y = 0
     grid = []
@@ -100,8 +101,9 @@ def main():
     pygame.time.set_timer(USEREVENT+1, 1000)
     while True:
         if time < 1:
+            past_generation = copy.deepcopy(grid)
             for cell in grid:
-                cell.miracle_of_life(grid)
+                cell.miracle_of_life(past_generation)
                 update_cell(grid, DISPLAY, cell.x, cell.y)
                 cell.draw(DISPLAY)
         for event in pygame.event.get():
@@ -126,6 +128,7 @@ def main():
                     update_cell(grid, DISPLAY, sprite.x, sprite.y)
                     sprite.draw(DISPLAY)
                     print(sprite)
+                    print(sprite.get_neighbors(grid))
         pygame.time.delay(200)
 
         pygame.display.update()
