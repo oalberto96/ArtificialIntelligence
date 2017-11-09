@@ -2,8 +2,15 @@
 
 ## Instalacion
 
-### Pygame
+## Pygame
 
+### Anaconda
+
+```bash
+pipconda install pygame
+```
+
+### Python 3
 ```bash
 sudo apt-get install python-pygame
 ```
