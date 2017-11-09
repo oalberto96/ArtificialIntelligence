@@ -4,7 +4,7 @@
 
 ## Pygame
 
-### Anaconda
+### Jupyter Notebook
 
 ```bash
 pipconda install pygame
