@@ -1,6 +1,6 @@
 # Conway's Game of life
 
-## Instalacion
+## Instalación
 
 ## Pygame
 
